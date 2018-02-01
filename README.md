@@ -29,6 +29,7 @@ Goal for each tutorial / exercise:
 
 # Phase 4 - Understanding the performance of React and/or more advanced tutorials
 * TODO: find links
+* https://reactjs.org/docs/optimizing-performance.html#examples
 
 ## React Resources
 * https://medium.freecodecamp.org/a-study-plan-to-cure-javascript-fatigue-8ad3a54f2eb1
