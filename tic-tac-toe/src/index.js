@@ -2,19 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-// class Square extends React.Component {
-
-//     render() {
-//       return (
-//         <button className="square" onClick={() => this.props.onClick()}>
-//           {this.props.value}
-//         </button>
-//       );
-//     }
-//   }
-
+// Functional Component 
+// - only consists of a render method 
+// - have to change this.props to props 
+// onClick={() => props.onClick()} can be changed to onClick = {props.onClick} but NOT onClick={props.onClick()}
 function Square(props) {
   return (
+    // Because the parent stores the which squares are filled, 
+    // need some way for the child to update the state of the parent 
+    // Usual pattern is for the parent to pass down a function to the child which gets
+    // called when the state needs to be changed (onClick in this case)
+
     <button className="square" onClick={props.onClick}>
       {props.value}
       </button>
@@ -22,10 +20,14 @@ function Square(props) {
 }
   
   class Board extends React.Component {
-
+    
+    // State is pulled upwards by deleting the child's constructor, adding a parent constructor 
+    // and changing references to State to Prop (in the child)
+    
     renderSquare(i) {
       return (
         <Square
+          // passing props down to Square
           value={this.props.squares[i]}
           onClick={() => this.props.onClick(i)}
         />
@@ -56,15 +58,22 @@ function Square(props) {
   }
   
   class Game extends React.Component {
+    
+    // We want to store the state of the children (Board and Square) in the parent 
+    // Game will then pass the state back down to the children via props
+    // This way the child componenets are always in sync with each other and with the parent 
 
     constructor(props) {
+      // have to explicitly call this when defining a constructor of a subclass in Javascript
       super(props);
       this.state = {
         history : [{
           squares: Array(9).fill(null),
         }],
         stepNumber: 0,
-        xIsNext: true,
+
+        // X always goes first
+        xIsNext: true, 
       };
     }
     
@@ -72,16 +81,23 @@ function Square(props) {
       const history = this.state.history.slice(0, this.state.stepNumber + 1);
       const current = history[history.length-1];
       const squares = current.squares.slice();
+
+      // return early and ignore the click if:
+      // - someone has won already 
+      // - if a square is already filled
       if (calculateWinner(squares) || squares[i]) {
         return;
       }
       squares[i] = this.state.xIsNext ? 'X' : '0';
+      
       this.setState({
         history: history.concat([{
           squares: squares,
         }]),
         stepNumber: history.length,
-        xIsNext: !this.state.xIsNext,
+
+        // each time we move we flip the toggle allowing X and O to take turns
+        xIsNext: !this.state.xIsNext, 
       })
     }
 
@@ -97,6 +113,7 @@ function Square(props) {
       const current = history[this.state.stepNumber];
       const winner = calculateWinner(current.squares);
 
+      // map() creates a new aray with the result of calling a function for every array element
       const moves = history.map((step, move) => {
         const desc = move ?
           'Go to move #' + move :
@@ -119,6 +136,7 @@ function Square(props) {
         <div className="game">
           <div className="game-board">
             <Board 
+              // passing props down to Board
               squares={current.squares}
               onClick= {(i) => this.handleClick(i)}
               />
@@ -150,7 +168,6 @@ function calculateWinner(squares) {
       return squares[a];
     }
   }
-
   return null;
 }
   
