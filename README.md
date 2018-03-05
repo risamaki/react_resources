@@ -1,4 +1,5 @@
 Updated 03/04/18 - Follows these guides: https://github.com/grab/front-end-guide and https://www.lullabot.com/articles/how-to-learn-react
+
 Guides goes into the basiscs of react, redux, css, ES6, testing (jest + Enymze), Linting, Types, webpack, hosting and deployment
 
 # Phase 1: User Interface React
@@ -7,31 +8,27 @@ Guides goes into the basiscs of react, redux, css, ES6, testing (jest + Enymze),
 3. egghead.io "Build Your First Production Quality React App" course - https://egghead.io/courses/build-your-first-production-quality-react-app
 Bonus Read: https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0
 
-Key Takeaways With these courses you’ll want to come away with a handle on the following:
-
-Re-enforcement of principles from React docs
-Intro to the build tools for React projects, particularly webpack
-Stateless functional components
-Routing (how you navigate from one “page” to the next)
-Fetching async data
+Key Takeaways - With these courses you’ll want to come away with a handle on the following:
+* Re-enforcement of principles from React docs
+* Intro to the build tools for React projects, particularly webpack
+* Stateless functional components
+* Routing (how you navigate from one “page” to the next)
+* Fetching async data
 
 # Phase 2: State Management using Redux
 1. Official Tutorial - https://redux.js.org/
 2. egghead.io "Getting Started with Redux" course - https://egghead.io/courses/getting-started-with-redux
 3. egghead.io "Building React Applications with Idiomatic Redux" course - https://egghead.io/courses/building-react-applications-with-idiomatic-redux
 
-Key Takeaways The thing you want to have at this point is not mastery, but a basic handle on Redux terminology and concepts:
-
-Three principles of Redux
-Actions
-Reducers
-Data flow
-Usage with React
-Async actions
-Async Flow
-Middleware
-
-# Phase 3: 
+Key Takeaways - The thing you want to have at this point is not mastery, but a basic handle on Redux terminology and concepts:
+* Three principles of Redux
+* Actions
+* Reducers
+* Data flow
+* Usage with React
+* Async actions
+* Async Flow
+* Middleware
 
 # List of Resources 
 
