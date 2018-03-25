@@ -8,7 +8,9 @@ import ReactDOM from 'react-dom';
 // importing components from App.js
 import App from './App';
 
+// Rendering the App Component in JSX format
 ReactDOM.render (
     <App />,
+    // to the target we created with ID of root
     document.getElementById('root')
 );
