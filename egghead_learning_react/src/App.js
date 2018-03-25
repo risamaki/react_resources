@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 // * Component 1
 class App extends React.Component {
@@ -11,10 +12,13 @@ class App extends React.Component {
         super();
         this.state = {
             txt: 'Hello World',
-            currentEvent: '--'
+            currentEvent: '--',
+            refA: '',
+            refB: ''
         }
         this.updateTxt= this.updateTxt.bind(this)
         this.updateCurrentEvent = this.updateCurrentEvent.bind(this)
+        this.updateRef = this.updateRef.bind(this)
     }
 
     // update method that will update that value of text in our input box
@@ -24,10 +28,25 @@ class App extends React.Component {
         })
     }
 
-
     updateCurrentEvent(e) {
         this.setState({
             currentEvent: e.type
+        })
+    }
+
+    updateRef() {
+        // refs returns the node we are refrencing
+        // it allows us to differentiate between the two input boxes while still using the same method for both
+        this.setState({
+            // when not using callback use this.refs.a.value
+            a: this.a.value,
+
+            // can only get away with ReactDOM.findDOMNode(this.b).value when there is only one node in the Component's DOM
+            // once you wrap it in a div etc you have to: 
+            // - add a ref to the input component
+            // - then grab the refs of the b component
+            // - then grab the input ref's value
+            b: this.b.refs.input.value
         })
     }
 
@@ -45,7 +64,7 @@ class App extends React.Component {
                 {/* We want to pass Text Content into a prop */}
                 <Button> <Heart / > React </Button>
             </div>
-
+            <hr />
             <div>
                 <h1>Current Event: {this.state.currentEvent}</h1>
                 <textarea
@@ -58,9 +77,37 @@ class App extends React.Component {
                     onDoubleClick={this.updateCurrentEvent}
                 />
             </div>
+            <hr/>
+            
+            <div>
+                <input
+                /* ref can also take a callback because it references the node
+                    same as ref={a} */
+                    ref= {node => this.a = node}
+                    type= "text"
+                    onChange={this.updateRef}
+                />
+                 State of A: {this.state.a}
+                <hr/>
+
+                {/* Can Reference the instance of another component */}
+                <Input
+                    ref= {component => this.b = component}
+                    update={this.updateRef}
+                />
+                 State of B: {this.state.b}
+            </div>
+
         </div>
     )
   }
+}
+
+
+class Input extends React.Component {
+    render() {
+        return <div><input ref="input" type="text" onChange={this.props.update}/></div>
+    }
 }
 
 // ! Stateless Function 
