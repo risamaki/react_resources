@@ -26,19 +26,33 @@ class App extends React.Component {
     return (
         <div>
             <h1>{this.state.txt}</h1>
+            
             {/* where we had our input, we render a Widget Component
                 and pass in an update prop (the method) */}
             <Widget update={this.update.bind(this)}/>
+            
+            {/* We want to pass Text Content into a prop */}
+            <Button> <Heart / > React </Button>
         </div>   
     )
   }
 }
 
-// * Component 2
-// Stateless Function 
+// ! Stateless Function 
+{ /* child component is updating the state of our parent component
+    via the update method that is passed in via a prop */}
 const Widget = (props) => 
-    // child component is updating the state of our parent component
-    // via the update method that is passed in via a prop
     <input type="text" onChange={props.update}/>
+
+{/* Allow the text content from the parent to pass through */}
+const Button = (props) => 
+    <button>{props.children}</button>
+
+{/* can have nested components and still have text content passed through */}
+class Heart extends React.Component {
+    render() {
+        return <span> &hearts; </span>
+    }
+}
 
 export default App
