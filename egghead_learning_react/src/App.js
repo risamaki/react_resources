@@ -6,25 +6,25 @@ import ReactDOM from 'react-dom';
     - needs React DOM 
     - ie. essentially controls if the App component can be visualized or not
 */}
-class Wrapper extends React.Component {
-    mount() {
-        ReactDOM.render(<App />, document.getElementById('a'))
-    }
+// class Wrapper extends React.Component {
+//     mount() {
+//         ReactDOM.render(<App />, document.getElementById('a'))
+//     }
     
-    unmount() {
-        ReactDOM.unmountComponentAtNode(document.getElementById('a'))
-    }
+//     unmount() {
+//         ReactDOM.unmountComponentAtNode(document.getElementById('a'))
+//     }
 
-    render() {
-        return(
-            <div>
-                <button onClick={this.mount.bind(this)}>Mount</button>
-                <button onClick={this.unmount.bind(this)}>Unmount</button>
-                <div id="a"></div>
-            </div>
-        )
-    }
-}
+//     render() {
+//         return(
+//             <div>
+//                 <button onClick={this.mount.bind(this)}>Mount</button>
+//                 <button onClick={this.unmount.bind(this)}>Unmount</button>
+//                 <div id="a"></div>
+//             </div>
+//         )
+//     }
+// }
 
 class App extends React.Component {
     
@@ -39,13 +39,16 @@ class App extends React.Component {
             currentEvent: '--',
             refA: '',
             refB: '',
-            lifecycleVal: 0
+            lifecycleVal: 0,
+            // determine if the new props coming in is increassing from previous prop or not
+            increasing: false
 
         }
         this.updateTxt= this.updateTxt.bind(this)
         this.updateCurrentEvent = this.updateCurrentEvent.bind(this)
         this.updateRef = this.updateRef.bind(this)
         this.updateLifecycle = this.updateLifecycle.bind(this)
+        this.updateFromProps = this.updateFromProps.bind(this)
     }
 
     // update method that will update that value of text in our input box
@@ -83,6 +86,13 @@ class App extends React.Component {
         })
     }
 
+    updateFromProps() {
+        ReactDOM.render(
+            <App propVal={this.props.propVal + 1} />, 
+            document.getElementById('root')
+        )
+    }
+
     componentWillMount() {
         // Fires off right before a component is mounted to a DOM
         // lets us know it is guaranteed to work properly
@@ -96,9 +106,25 @@ class App extends React.Component {
         })
     }
 
+    // can access new props coming in via the nextProps paramater
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            increasing: nextProps.propVal > this.props.propVal
+        })
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        // only update if the next propVal is a multiple of 5
+        // doesn't prevent state or props from updating -- just prevents a rerender
+        return nextProps.propVal % 5 === 0;
+    }
 
     render() {
         console.log('render');
+
+        // should be false on first render, true for subsequent re-renders 
+        console.log("Increasing? " + this.state.increasing);
+
         // similar to props we use {} for state
         return (
             <div>
@@ -143,29 +169,39 @@ class App extends React.Component {
                 </div>
                 <hr/> {/* ---------------------------------- */}
                 <button onClick={this.updateLifecycle}>{this.state.lifecycleVal * this.state.m}</button>
+                <hr/> {/* ---------------------------------- */}
+                <button onClick={this.updateFromProps}>{this.props.propVal}</button>
             </div>
         )
     }
 
     componentDidMount() {
         // Will fire off once the component is mounted to the DOM
-        // have acess to state, props and the DOM element   
+        // have acess to state, props and the DOM element  
+
        console.log('Component Did Mount')
        console.log(ReactDOM.findDOMNode(this)) // prints out the DOM tree itself
-        this.inc = setInterval(this.updateLifecycle, 500); // calls this.update every 500ms
+       // this.inc = setInterval(this.updateLifecycle, 500); // calls this.update every 500ms
     }
 
-    
+    componentDidUpdate(prevProps, prevState) {
+        // will only print state before the component is updated - 4 , 9 etc 
+        // indicates that props and state are actually being updated -- just not rendered 
+        console.log("prevProps:" + prevProps.propVal);
+    }
+
     componentWillUnmount() {
         // will fire when the component is about to leave the DOM 
         // cleans up any running processes
 
         console.log('Component Will Unmount');
-        clearInterval(this.inc);
+        // clearInterval(this.inc);
 
     }
 
 }
+
+App.defaultProps = {propVal : 0}
 
 class Input extends React.Component {
     render() {
@@ -190,4 +226,4 @@ class Heart extends React.Component {
     }
 }
 
-export default Wrapper
+export default App
