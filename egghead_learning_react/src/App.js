@@ -10,14 +10,24 @@ class App extends React.Component {
         // rather than of React.component
         super();
         this.state = {
-            txt: 'this is the state txt'
+            txt: 'Hello World',
+            currentEvent: '--'
         }
+        this.updateTxt= this.updateTxt.bind(this)
+        this.updateCurrentEvent = this.updateCurrentEvent.bind(this)
     }
 
-    // update method that will update that value of text
-    update(e) {
+    // update method that will update that value of text in our input box
+    updateTxt(e) {
         this.setState({
             txt: e.target.value
+        })
+    }
+
+
+    updateCurrentEvent(e) {
+        this.setState({
+            currentEvent: e.type
         })
     }
 
@@ -25,15 +35,30 @@ class App extends React.Component {
     // similar to props we use {} for state
     return (
         <div>
-            <h1>{this.state.txt}</h1>
-            
-            {/* where we had our input, we render a Widget Component
-                and pass in an update prop (the method) */}
-            <Widget update={this.update.bind(this)}/>
-            
-            {/* We want to pass Text Content into a prop */}
-            <Button> <Heart / > React </Button>
-        </div>   
+            <div>
+                <h1>{this.state.txt}</h1>
+
+                {/* where we had our input, we render a Widget Component
+                    and pass in an update prop (the method) */}
+                <Widget update={this.updateTxt}/>
+                
+                {/* We want to pass Text Content into a prop */}
+                <Button> <Heart / > React </Button>
+            </div>
+
+            <div>
+                <h1>Current Event: {this.state.currentEvent}</h1>
+                <textarea
+                    onKeyPress={this.updateCurrentEvent}
+                    onCopy={this.updateCurrentEvent}
+                    onCut={this.updateCurrentEvent}
+                    onPaste={this.updateCurrentEvent}
+                    onFocus={this.updateCurrentEvent}
+                    onBlur={this.updateCurrentEvent}
+                    onDoubleClick={this.updateCurrentEvent}
+                />
+            </div>
+        </div>
     )
   }
 }
