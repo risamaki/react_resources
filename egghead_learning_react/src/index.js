@@ -10,7 +10,10 @@ import App from './App';
 
 // Rendering the App Component in JSX format
 ReactDOM.render (
-    <App />,
+    // * Video 4 Notes 
+    // pass data into the components via PROPS which are very similar to 
+    // attributes in HTML
+    <App txt="this is the prop text"/>,
     // to the target we created with ID of root
     document.getElementById('root')
 );
