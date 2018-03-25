@@ -56,7 +56,6 @@ class App extends React.Component {
         <div>
             <div>
                 <h1>{this.state.txt}</h1>
-
                 {/* where we had our input, we render a Widget Component
                     and pass in an update prop (the method) */}
                 <Widget update={this.updateTxt}/>
@@ -64,7 +63,7 @@ class App extends React.Component {
                 {/* We want to pass Text Content into a prop */}
                 <Button> <Heart / > React </Button>
             </div>
-            <hr />
+            <hr /> {/* ---------------------------------- */}
             <div>
                 <h1>Current Event: {this.state.currentEvent}</h1>
                 <textarea
@@ -77,32 +76,31 @@ class App extends React.Component {
                     onDoubleClick={this.updateCurrentEvent}
                 />
             </div>
-            <hr/>
-            
+            <hr/> {/* ---------------------------------- */}
             <div>
                 <input
-                /* ref can also take a callback because it references the node
+                    /* ref can also take a callback because it references the node
                     same as ref={a} */
                     ref= {node => this.a = node}
                     type= "text"
                     onChange={this.updateRef}
                 />
-                 State of A: {this.state.a}
+                    State of A: {this.state.a}
                 <hr/>
 
-                {/* Can Reference the instance of another component */}
+                
                 <Input
+                    /* Can Reference the instance of another component */
                     ref= {component => this.b = component}
                     update={this.updateRef}
                 />
-                 State of B: {this.state.b}
+                    State of B: {this.state.b}
             </div>
 
         </div>
     )
   }
 }
-
 
 class Input extends React.Component {
     render() {
