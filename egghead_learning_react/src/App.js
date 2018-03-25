@@ -88,6 +88,12 @@ class App extends React.Component {
         // lets us know it is guaranteed to work properly
         // will only execute once
         console.log('Component Will Mount')
+
+        // Have access to states and props but do not have access to 
+        // DOM representation of our components  so we can setState 
+        this.setState({
+            m:2
+        })
     }
 
 
@@ -118,7 +124,7 @@ class App extends React.Component {
                         onDoubleClick={this.updateCurrentEvent}
                     />
                 </div>
-                <hr/> {/* ------------ Video 10 ---------------- */}
+                <hr/> {/* ---------------------------------- */}
                 <div>
                     <input
                         /* ref can also take a callback because it references the node
@@ -135,26 +141,31 @@ class App extends React.Component {
                     />
                         State of B: {this.state.b}
                 </div>
-                <hr/> {/* ------------ Video 11 ---------------- */}
-                <button onClick={this.updateLifecycle}>{this.state.lifecycleVal}</button>
+                <hr/> {/* ---------------------------------- */}
+                <button onClick={this.updateLifecycle}>{this.state.lifecycleVal * this.state.m}</button>
             </div>
         )
     }
 
     componentDidMount() {
         // Will fire off once the component is mounted to the DOM
-        console.log('Component Did Mount')
+        // have acess to state, props and the DOM element   
+       console.log('Component Did Mount')
+       console.log(ReactDOM.findDOMNode(this)) // prints out the DOM tree itself
+        this.inc = setInterval(this.updateLifecycle, 500); // calls this.update every 500ms
     }
 
     
     componentWillUnmount() {
         // will fire when the component is about to leave the DOM 
-        console.log('Component Will Unmount')
+        // cleans up any running processes
+
+        console.log('Component Will Unmount');
+        clearInterval(this.inc);
+
     }
 
 }
-
-
 
 class Input extends React.Component {
     render() {
