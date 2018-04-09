@@ -1,57 +1,65 @@
 import React from 'react';
 
-class App extends React.Component {
+
+// Higher Order Components 
+// - purpose is to share common functionality or information among multiple components 
+// - sole function is to take in a new component and return a new component 
+
+const HOC = (InnerComponent) => class extends React.Component {
 
     constructor() {
         super();
-        this.state = {items: []}
+        this.state = {count: 0}
     }
 
     componentWillMount() {
-        // AJAX call
-        // fix CORS error by making endpoint https
-        fetch('https://swapi.co/api/people/?format=json') 
-            .then (response => response.json())
-            .then (
-                ({results:items}) => this.setState({items})
-            )
+        console.log('will mount');
     }
 
-    filter (e) {
-        this.setState({filter:e.target.value})
+    update() {
+        this.setState({
+            count: this.state.count + 1
+        })
     }
 
     render() {
-        // ! Version 1
-        // return (
-        //     <div>
-        //         {/*  Each child in an array or iterator should have a unique "key" prop. 
-        //              - Fix this by adding a key to the h4*/}
-        //         {items.map(item => 
-        //             <h4 key={item.name}>{item.name}</h4>)}
-        //     </div>
-        // )
-
-        // ! Version 2 - using a Person Component
-        let items = this.state.items
-        if (this.state.filter) {
-            items = items.filter ( item => 
-            item.name.toLowerCase().includes(this.state.filter.toLowerCase()))
-        }
         return (
-            <div> 
-                <input type="text"
-                onChange={this.filter.bind(this)}/>
-                {items.map(item => 
-                    // new error:  Each child in an array or iterator should have a unique "key" prop. (Ie. key is needed among siblings)
-                    <Person key={item.name} person={item} />)}
-            </div>
+            <InnerComponent
+            /* add this to ensure that the props.children are able to be passed through */
+            {...this.props}
+            /* need to get state into our component */
+            {...this.state}
+            update = {this.update.bind(this)}
+            />
         )
     }
 }
 
 
-const Person = (props) => <h4> {props.person.name} </h4>
+class App extends React.Component {
 
+    render() {
+        return (
+            <div> 
+                <Button>button </Button>
+                <hr/>
+                <LabelHOC>label</LabelHOC>
+            </div>
+        )
+    }
+}
 
+const Button = HOC((props) => <button onClick={props.update}> {props.children} - {props.count}</button>)
+
+class Label extends React.Component {
+    componentWillMount() {
+        console.log('label will mount');
+    }
+    render() {
+        return (
+            <label onMouseMove={this.props.update}>{this.props.children} - {this.props.count}</label>
+        )
+    }
+}
+const LabelHOC = HOC(Label)
 export default App
